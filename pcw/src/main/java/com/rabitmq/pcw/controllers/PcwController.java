@@ -21,7 +21,7 @@ public class PcwController {
     @PostMapping(Constants.PRICE_URL)
     public ResponseEntity<?> getPrice(@RequestBody Quote quote){
         Price price = pcwService.sentToPrice(quote);
-        if (price.getId().equals(null))
+        if (price == null)
             return ResponseEntity.status(400).body(price);
         else
             return ResponseEntity.ok(price);

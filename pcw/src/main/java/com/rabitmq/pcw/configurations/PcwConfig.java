@@ -1,10 +1,7 @@
 package com.rabitmq.pcw.configurations;
 
 import com.rabitmq.pcw.constants.Constants;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.DefaultJackson2JavaTypeMapper;
@@ -20,7 +17,7 @@ public class PcwConfig {
 
     @Bean
     public DirectExchange exchange(){
-        return new DirectExchange(Constants.QUEUE_NAME);
+        return new DirectExchange(Constants.EXCHANGE_NAME);
     }
 
     @Bean
@@ -28,7 +25,9 @@ public class PcwConfig {
         Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter();
         DefaultJackson2JavaTypeMapper typeMapper = new DefaultJackson2JavaTypeMapper();
         typeMapper.setIdClassMapping(Map.of(
-                "com.rabitmq.price.dtos.Price", com.rabitmq.pcw.dtos.Price.class
+                "com.rabitmq.price.dtos.Price", com.rabitmq.pcw.dtos.Price.class,
+                "com.rabitmq.pcw.dtos.Quote", com.rabitmq.pcw.dtos.Quote.class
+
         ));
         converter.setJavaTypeMapper(typeMapper);
         return converter;

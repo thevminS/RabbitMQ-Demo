@@ -16,15 +16,26 @@ import java.util.Random;
 public class PriceService {
 
     @RabbitListener(queues = Constants.QUEUE_NAME)
-    public Price handleQuote(Quote quote) throws InterruptedException {
-        log.info("Quote : {}", quote);
-        // Process the Quote and create a Price
-        Price price = new Price();
-        price.setId(quote.getId());
-        price.setPriceList(generateRandomIntegers());
+    public Price handleQuote(Quote quote) throws Exception {
+        try {
+            log.info("Quote : {}", quote);
 
-        log.info("Price : {}", price);
-        return price;
+            //
+            if (true) {
+                throw new RuntimeException("Testing the DLQ");
+            }
+
+            // Process the Quote and create a Price
+            Price price = new Price();
+            price.setId(quote.getId());
+            price.setPriceList(generateRandomIntegers());
+
+            log.info("Price : {}", price);
+            return price;
+        }catch (Exception e){
+            log.error("Error processing message: {}", e.getMessage());
+            throw e;
+        }
     }
 
 
